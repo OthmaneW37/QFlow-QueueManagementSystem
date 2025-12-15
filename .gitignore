@@ -1,0 +1,11 @@
+node_modules/
+.expo/
+npm-debug.log
+dark-debug.log
+*.log
+.DS_Store
+dist/
+coverage/
+web-build/
+.env
+.env.local

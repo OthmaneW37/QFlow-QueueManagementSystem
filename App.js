@@ -1,4 +1,5 @@
 // App.js
+import { registerRootComponent } from 'expo';
 import * as React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
@@ -78,7 +79,7 @@ const styles = StyleSheet.create({
     }
 });
 
-export default function App() {
+function App() {
     return (
         <NavigationContainer>
             <Stack.Navigator initialRouteName="Home">
@@ -106,3 +107,5 @@ export default function App() {
         </NavigationContainer>
     );
 }
+
+export default registerRootComponent(App);

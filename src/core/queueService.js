@@ -1,5 +1,5 @@
 import app from './firebaseConfig';
-import { getDatabase, ref, onValue } from 'firebase/database';
+// import { getDatabase, ref, onValue } from 'firebase/database'; // FIXME: Dependency issue, running in Mock Mode only
 
 // Helper to check if Firebase is configured
 const isFirebaseConfigured = () => {
