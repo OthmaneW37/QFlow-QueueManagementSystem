@@ -4,9 +4,19 @@ import { View, Text, StyleSheet, TouchableOpacity, ActivityIndicator, Alert } fr
 import { theme } from '../../../core/theme';
 import { queueService } from '../../../core/queueService';
 
+import * as ScreenOrientation from 'expo-screen-orientation';
+
 const ClientHomeScreen = () => {
     const [loading, setLoading] = useState(false);
     const [lastTicket, setLastTicket] = useState(null);
+
+    React.useEffect(() => {
+        // Force Portrait for Client
+        const lockOrientation = async () => {
+            await ScreenOrientation.lockAsync(ScreenOrientation.OrientationLock.PORTRAIT_UP);
+        };
+        lockOrientation();
+    }, []);
 
     const handleTakeTicket = async () => {
         setLoading(true);

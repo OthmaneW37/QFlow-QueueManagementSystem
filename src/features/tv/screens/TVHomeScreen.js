@@ -3,12 +3,26 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, Dimensions } from 'react-native';
 import { theme } from '../../../core/theme';
 import { queueService } from '../../../core/queueService';
+import * as ScreenOrientation from 'expo-screen-orientation';
 
 const { width, height } = Dimensions.get('window');
 
 const TVHomeScreen = () => {
     const [currentTicket, setCurrentTicket] = useState({ number: '----', counter: '-' });
     const [history, setHistory] = useState([]);
+
+    useEffect(() => {
+        // Force Landscape for TV
+        const lockOrientation = async () => {
+            await ScreenOrientation.lockAsync(ScreenOrientation.OrientationLock.LANDSCAPE);
+        };
+        lockOrientation();
+
+        return () => {
+            // Reset to default when leaving
+            ScreenOrientation.unlockAsync();
+        };
+    }, []);
 
     useEffect(() => {
         // Subscribe to ticket updates

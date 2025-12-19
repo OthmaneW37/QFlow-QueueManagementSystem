@@ -2,8 +2,18 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { theme } from '../../../core/theme';
+import * as ScreenOrientation from 'expo-screen-orientation';
+
 
 const StaffHomeScreen = () => {
+    React.useEffect(() => {
+        // Force Portrait for Staff
+        const lockOrientation = async () => {
+            await ScreenOrientation.lockAsync(ScreenOrientation.OrientationLock.PORTRAIT_UP);
+        };
+        lockOrientation();
+    }, []);
+
     return (
         <View style={styles.container}>
             <Text style={theme.text.header}>Staff Portal</Text>
