@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, ScrollView, Alert, Vibration, Dimensions } from 'react-native';
-import { ref, push, onValue } from 'firebase/database';
+import { ref, push, onValue, runTransaction } from 'firebase/database';
 import { database } from '../../shared/config/firebaseConfig';
 import { AppButton } from '../../shared/components/AppButton';
 import { theme } from '../../shared/theme';
 
 const { width } = Dimensions.get('window');
 
-export default function ClientTicket() {
+export default function ClientTicket({ navigation }) {
     const [myTicket, setMyTicket] = useState(null);
     const [waitingList, setWaitingList] = useState([]);
     const [currentTicket, setCurrentTicket] = useState(null);
@@ -70,19 +70,19 @@ export default function ClientTicket() {
         }
     }, [currentTicket, waitingList, myTicket]);
 
-    // Generate unique ticket number (A-001, A-002, etc.)
-    const generateTicketNumber = () => {
-        const prefix = 'A';
-        const random = Math.floor(Math.random() * 1000);
-        const number = `${prefix}-${String(random).padStart(3, '0')}`;
-        return number;
-    };
-
-    // IoT Action: Take a Ticket
+    // Transactional Ticket Number Generation
     const takeTicket = async () => {
         setLoading(true);
         try {
-            const ticketNumber = generateTicketNumber();
+            const indexRef = ref(database, 'config/last_ticket_index');
+
+            // Transaction to atomically increment ticket number
+            const result = await runTransaction(indexRef, (currentData) => {
+                return (currentData || 0) + 1;
+            });
+
+            const nextIndex = result.snapshot.val();
+            const ticketNumber = `A-${String(nextIndex).padStart(3, '0')}`;
 
             // Push new ticket to /waiting_list
             const waitingListRef = ref(database, 'waiting_list');
@@ -93,8 +93,8 @@ export default function ClientTicket() {
 
             setMyTicket(ticketNumber);
         } catch (error) {
-            console.error('Error generating ticket:', error);
-            Alert.alert('Error', 'Failed to generate ticket');
+            console.error('Error generating ticket transaction:', error);
+            Alert.alert('Error', 'Failed to generate ticket. Please try again.');
         } finally {
             setLoading(false);
         }
@@ -156,6 +156,15 @@ export default function ClientTicket() {
                             </View>
                         )}
 
+                        {!isMyTurn && (
+                            <AppButton
+                                title="🎮 Play Flappy Bird"
+                                onPress={() => navigation.navigate('Game', { myTicket })}
+                                variant="outline"
+                                style={{ marginTop: 20, width: '100%' }}
+                            />
+                        )}
+
                         {isMyTurn && currentTicket?.counter && (
                             <Text style={styles.counterInstruction}>
                                 Please proceed to Counter {currentTicket.counter}
@@ -171,8 +180,14 @@ export default function ClientTicket() {
                             </View>
                             <View style={styles.ticketStatDivider} />
                             <View style={styles.ticketStat}>
-                                <Text style={styles.statLabel}>AHEAD OF YOU</Text>
-                                <Text style={styles.statValue}>{peopleAhead !== null ? peopleAhead : '-'}</Text>
+                                <Text style={styles.statLabel}>EST. WAIT TIME</Text>
+                                <Text style={styles.statValue}>
+                                    {peopleAhead !== null
+                                        ? peopleAhead === 0
+                                            ? '< 1 min'
+                                            : `~${peopleAhead * 5} min`
+                                        : '-'}
+                                </Text>
                             </View>
                         </View>
                     )}

@@ -1,5 +1,7 @@
-import React, { useState, useEffect, useRef } from 'react';
+import { useRef, useEffect, useState } from 'react';
 import { View, Text, StyleSheet, Dimensions, StatusBar, Animated, Easing } from 'react-native';
+import QRCode from 'react-native-qrcode-svg';
+import * as Speech from 'expo-speech';
 import { ref, onValue } from 'firebase/database';
 import { database } from '../../shared/config/firebaseConfig';
 import { theme } from '../../shared/theme';
@@ -38,9 +40,18 @@ export default function TVScreen() {
 
                 if (now - calledTime < 10000) {
                     try {
+                        // Play Sound
                         await SoundService.playNotificationSound();
+
+                        // Speak Announcement
+                        const speechText = `Ticket ${data.number}, please proceed to counter ${data.counter}`;
+                        Speech.speak(speechText, {
+                            language: 'en-US',
+                            pitch: 1.0,
+                            rate: 0.8 // Slightly slower for clarity
+                        });
                     } catch (e) {
-                        console.log('Sound error', e);
+                        console.log('Sound/Speech error', e);
                     }
                 }
 
@@ -141,6 +152,17 @@ export default function TVScreen() {
 
                 {/* History Sidebar */}
                 <View style={styles.sidebar}>
+                    <View style={styles.qrContainer}>
+                        <Text style={styles.qrLabel}>SCAN TO JOIN</Text>
+                        <View style={styles.qrCodeWrapper}>
+                            <QRCode
+                                value="QFLOW_ACCESS_TOKEN"
+                                size={450}
+                                color={theme.colors.primary}
+                                backgroundColor="white"
+                            />
+                        </View>
+                    </View>
                     <Text style={styles.sidebarTitle}>RECENTLY CALLED</Text>
                     <View style={styles.historyContainer}>
                         {history.length > 0 ? (
@@ -280,6 +302,25 @@ const styles = StyleSheet.create({
         borderRadius: 30,
         padding: 20,
         marginLeft: 10,
+    },
+    qrContainer: {
+        alignItems: 'center',
+        marginBottom: 20,
+        paddingBottom: 20,
+        borderBottomWidth: 1,
+        borderBottomColor: 'rgba(255,255,255,0.1)',
+    },
+    qrLabel: {
+        color: '#fff',
+        fontSize: 10,
+        fontWeight: '900',
+        marginBottom: 10,
+        letterSpacing: 2,
+    },
+    qrCodeWrapper: {
+        padding: 10,
+        backgroundColor: '#fff',
+        borderRadius: 15,
     },
     sidebarTitle: {
         color: '#94A3B8',

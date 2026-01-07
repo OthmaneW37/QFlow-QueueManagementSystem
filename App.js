@@ -9,6 +9,8 @@ import TVScreen from './src/features/tv/TVScreen';
 import StaffLoginScreen from './src/features/staff/StaffLoginScreen';
 import StaffDashboard from './src/features/staff/StaffDashboard';
 import ClientTicket from './src/features/client/ClientTicket';
+import ScanScreen from './src/features/client/ScanScreen';
+import GameScreen from './src/features/client/GameScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -58,9 +60,19 @@ export default function App() {
                         options={{ title: 'Staff Portal' }}
                     />
                     <Stack.Screen
+                        name="Scan"
+                        component={ScanScreen}
+                        options={{ title: 'Scan QR Code' }}
+                    />
+                    <Stack.Screen
                         name="Client"
                         component={ClientTicket}
                         options={{ title: 'Get Your Ticket' }}
+                    />
+                    <Stack.Screen
+                        name="Game"
+                        component={GameScreen}
+                        options={{ headerShown: false }}
                     />
                 </Stack.Navigator>
             </NavigationContainer>

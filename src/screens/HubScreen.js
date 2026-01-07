@@ -44,7 +44,7 @@ export default function HubScreen({ navigation }) {
                     </Text>
                     <AppButton
                         title="Get Ticket"
-                        onPress={() => navigation.navigate('Client')}
+                        onPress={() => navigation.navigate('Scan')}
                         variant="outline"
                         style={styles.button}
                     />
