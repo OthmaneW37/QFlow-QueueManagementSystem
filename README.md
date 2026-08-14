@@ -2,7 +2,7 @@
 
 Système de gestion de file d'attente intelligent développé avec React Native (Expo) et Firebase Realtime Database.
 
-## 🚀 Installation rapide
+##  Installation rapide
 
 ### 1. Cloner le projet
 ```bash
@@ -25,7 +25,7 @@ cp .env.example .env
 #### b. Obtenir vos credentials Firebase
 1. Allez sur [Firebase Console](https://console.firebase.google.com/)
 2. Sélectionnez le projet **qflow-b7bb0**
-3. Cliquez sur ⚙️ **Paramètres du projet**
+3. Cliquez sur  **Paramètres du projet**
 4. Dans la section **"Vos applications"**, sélectionnez l'app Web
 5. Copiez les valeurs de configuration
 
@@ -49,11 +49,11 @@ npx expo start
 
 Scannez le QR code avec l'app **Expo Go** sur votre téléphone.
 
-## 📱 Modes disponibles
+##  Modes disponibles
 
-- **📺 TV Display** : Affichage des files d'attente pour écran TV
-- **👨‍💼 Staff** : Interface pour le personnel
-- **👤 Client** : Interface pour les clients
+- ** TV Display** : Affichage des files d'attente pour écran TV
+- ** Staff** : Interface pour le personnel
+- ** Client** : Interface pour les clients
 
 ## �️ Architecture
 
@@ -72,7 +72,7 @@ src/
 └── navigation/        # Configuration navigation
 ```
 
-## 🔥 Structure Firebase Realtime Database
+##  Structure Firebase Realtime Database
 
 ```json
 {
@@ -94,7 +94,7 @@ src/
 }
 ```
 
-## ⚠️ Règles de sécurité Firebase (développement)
+##  Règles de sécurité Firebase (développement)
 
 Actuellement en mode développement avec règles ouvertes:
 ```json
@@ -106,22 +106,22 @@ Actuellement en mode développement avec règles ouvertes:
 }
 ```
 
-⚠️ **À mettre à jour avant la production !**
+ **À mettre à jour avant la production !**
 
-## 🛠️ Technologies utilisées
+##  Technologies utilisées
 
 - **React Native** (Expo SDK 52)
 - **React Navigation** v6
 - **Firebase Realtime Database**
 - **Expo Vector Icons**
 
-## 👥 Équipe
+##  Équipe
 
 Projet développé par 4 étudiants en ingénierie (4IIR).
 
-## � Notes importantes
+##  Notes importantes
 
-- ⚠️ **Ne jamais commit le fichier `.env`** - il contient vos credentials Firebase
+-  **Ne jamais commit le fichier `.env`** - il contient vos credentials Firebase
 - Le fichier `.env.example` sert de template pour les autres développeurs
 - Assurez-vous que tous les membres de l'équipe ont accès au projet Firebase
 
